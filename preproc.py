@@ -215,8 +215,37 @@ def get_dataset():
     profile = get_profile()
     offers_transcript = get_offers_transcript()
     
-    #perform merging
+    # perform merging
     dataset = offers_transcript.merge(profile, how='inner', on='profile_id') \
                                 .merge(portfolio, how='inner', on='offer_id')
+    
+    # remove rows about `informational` offers
+    dataset.drop(dataset[dataset.offer_type_informational == 1].index, axis=0, inplace=True)
+    
+    # remove rows about 118 years old profiles and the gender_na column
+    dataset.drop(dataset[dataset.age == 118].index, axis=0, inplace=True)
+   
+    # get the index of successful offers
+    successful_offers_index = dataset.query("""~offer_viewed.isna() and \
+                                            ~offer_completed.isna() and \
+                                            offer_viewed <= offer_completed and \
+                                            offer_completed <= offer_expiration""").index
+    # create a series and set the successful offers index to 1
+    successful_offer = pd.Series(0, index=dataset.index)
+    successful_offer.loc[successful_offers_index] = 1
+    # add success offer column
+    dataset['successful_offer'] = successful_offer
+    
+    # remove unused columns
+    dataset.drop(['offer_expiration',
+                  'offer_completed',
+                  'offer_received',
+                  'offer_viewed',
+                  'profile_id',
+                  #'membership_days',
+                  'gender_na',
+                  'offer_id',
+                  'channels',
+                  'offer_type_informational'], axis=1, inplace=True)
     
     return dataset
