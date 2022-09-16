@@ -1,7 +1,7 @@
 # Optimizing app offers with Starbucks
 
 ## Overview
-This repository depicts the approach applied and the results obtained in the Data Science Udacity Nanodegree Capstone Project. A full project report is available [here](https://example.com).
+This repository depicts the approach applied and the results obtained in the Data Science Udacity Nanodegree Capstone Project. A full project report is available [here](https://ereynrs.github.io/2022/09/05/starbucks-project-report.html.
 
 ## Problem background and project statement
 The data set contains simulated data that mimics customer behavior on the Starbucks rewards mobile app.
